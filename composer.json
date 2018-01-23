@@ -1,0 +1,19 @@
+{
+    "name": "bomeravi/uaparser",
+    "description": "Detects all the popular browsers, os",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bomeravi",
+            "email": "bomeravi@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+    },
+	"autoload": {
+        "psr-4": {
+            "Bomeravi\\uaParser\\": "src/bomeravi/uaparser/"
+        }
+    }
+}

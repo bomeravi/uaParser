@@ -3,8 +3,9 @@ namespace Bomeravi\uaParser;
 use Bomeravi\uaParser\useragent;
 
 class language {
-	private $useragent;
+	public $useragent;
 	private $name;
+	private $accept_languages = array();
 	
 	
 	private $languages = array(
@@ -48,8 +49,8 @@ class language {
 	'cs' => 'Czech',
 	'da' => 'Danish',
 	'div' => 'Divehi',
-	'nl-be' => 'Dutch (Belgium)',
 	'nl' => 'Dutch (Netherlands)',
+	'nl-be' => 'Dutch (Belgium)',
 	'en-au' => 'English (Australia)',
 	'en-bz' => 'English (Belize)',
 	'en-ca' => 'English (Canada)',
@@ -210,13 +211,15 @@ else		{
         }
 		
 		$this->detect_language();
+		$this->check_languages();
     }
   
   public function getName()
     {
         if (!isset($this->name)) {
-            $this->has_language = language::detect($this,$this->getUseragent());
+         
         }
+		return '';
 
         return $this->name;
     }
@@ -260,6 +263,24 @@ else		{
 				}
 		return false;
 	}
+	public function check_languages(){
+		
+		$languages_header = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'en_US';
+		$languages_header = explode(',', $languages_header);
+		$all_languages_eval = array();
+		 
+		foreach($languages_header as $language_header){
+		  $language_name = preg_replace('/([^;]+);.*$/', '${1}', $language_header); //extract actuall language string
+		 
+		  $language_significance = preg_replace('/^[^q]*q=([^\,]+)*$/', '${1}', $language_header);      //extract evaluation as string
+		  $language_significance = is_numeric($language_significance) ? floatval($language_significance) : 1.0; //parse evaluation, if no q=__ (first language is like "1"), then we will use 1.0
+		 
+		  $all_languages_eval[ $language_name ] = $language_significance;
+		}
+		 
+		array_multisort($all_languages_eval, SORT_DESC , SORT_NATURAL);//SORT_DESC: higher-value is on top (vs. SORT_ASC).
+		 $this->accept_languages = $all_languages_eval;
+	}
 	
 	public function setLanguage($name) {
 		$this->name = (string)$name;
@@ -271,11 +292,25 @@ else		{
 		$this->useragent =  $useragent;
 		return $this;
 	}
+	
+	public function getAcceptLanguages(){
+		return $this->accept_languages;
+	}
+	
 	public function getUseragent()
     {
 		//var_dump($this->useragent);
         return $this->useragent;
     }
+	
+	public function getFullName($lang){
+		foreach($this->languages as $key => $value){
+			if($key == strtolower($lang)){
+				return $value;
+			}
+		}
+		return $lang;
+	}
 	
   
   

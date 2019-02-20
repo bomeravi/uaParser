@@ -72,15 +72,14 @@ private $not_browser_versions = array(
 			
         } elseif ( is_string($useragent)) {
       
-		    $this->useragent =new useragent($useragent);
+		    $this->useragent = new useragent($useragent);
 		} 
 		elseif (NULL == $useragent) {
-			 $this->useragent =new useragent($useragent);
+			 $this->useragent = new useragent($useragent);
 		}
-else		{
-			//echo "44";
-		//	var_dump($useragent);
-        //    throw new InvalidArgumentException($useragent . "is not working");
+		else{
+		
+            throw new InvalidArgumentException($useragent . "is not working");
         }
 		$this->detect_browser();
 		$this->detect_browser_bit();
@@ -191,6 +190,9 @@ else		{
 		}
 	}
 	
+	public function getUseragent(){
+		return $this->useragent->getName();
+	}
   
   
 }

@@ -5,22 +5,23 @@ use Bomeravi\uaParser\useragent;
 
 class device {
 	private $useragent;
-	private $type;
+	private $type;//computer, iphone, ipad, tv, blackberry,Mobile, tablet, crawler.
+	private $device_details;
 	
 	private $devices = array(
-	'iphone' => 'iPhone', 
+		'iphone' => 'iPhone', 
         'ipod' => 'iPod', 
         'ipad' => 'iPad', 
-        'android' => 'Android', 
+        'android' => 'Android Phone', 
         'blackberry' => 'BlackBerry', 
         'webos' => 'Mobile',
-		'mobole' => 'Mobile',
+		'mobile' => 'Mobile',
 		'Tablet' => 'Tablet'
-);
-private $not_device_versions = array(
-	'tablet',
-	'mobile',
-	'Chromium');
+	);
+
+	private $not_device_versions = array(
+		
+		'Chromium');
 	
 	public function __construct($useragent = null)
     {

@@ -2,7 +2,7 @@
 namespace Bomeravi\uaParser;
 
 class useragent {
-	public $useragent;
+	public $name;
 	public function __construct($name = null){
 	//	echo "it is executed";
 	if(null !== $name){
@@ -16,21 +16,21 @@ class useragent {
 	public function setName($useragent)
   {
 	
-		$this->useragent = (string) $useragent;
+		$this->name = (string) $useragent;
 		return $this;
   }
   
    public function getName()
     {
-        if (null === $this->useragent) {
+        if (null === $this->name) {
             $this->createName();
         }
 
-        return $this->useragent;
+        return $this->name;
     }
 	
 	public function createName($useragent= ''){
-		if($useragent == null){
+		if($useragent == null || empty($useragent)){
 		$useragent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null;
 		}
 			 $this->setName($useragent);

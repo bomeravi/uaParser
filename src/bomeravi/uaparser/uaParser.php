@@ -7,11 +7,13 @@ use Bomeravi\uaParser\engine;
 
 class uaParser {
 	public $useragent;
+	public $os;
+	public $browser;
 	
 	public function __construct($name = null){
 		$this->useragent = new useragent($name);
 		$this->os = new os($this->useragent);
-		$this->browser = new browser($this->useragent);
+		$this->browser = new browser($this->useragent); 
 		$this->engine = new engine($this->useragent);
 		$this->language = new language($this->useragent);
 	}

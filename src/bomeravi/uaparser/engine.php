@@ -22,9 +22,6 @@ private $not_engine_versions = array(
 	
 	public function __construct($useragent = null)
     {
-			//var_dump($useragent);
-		//echo "OS Class initialized $useragent <br />";
-		//var_dump($useragent instanceof uaParser);
         if ($useragent instanceof useragent) {
 		//	echo "11111";
             $this->useragent = $useragent;
@@ -37,9 +34,7 @@ private $not_engine_versions = array(
 			$this->useragent = new useragent;
 		}
 else		{
-			//echo "44";
-		//	var_dump($useragent);
-        //    throw new InvalidArgumentException($useragent . "is not working");
+			    throw new InvalidArgumentException($useragent . "is not working");
         }
     }
   
@@ -60,33 +55,6 @@ else		{
         return $this->version;
 	}
 	
-	public static function detect($useragent){
-		$engine = new engine;
-		$useragent = $useragent->getName();
-		foreach ($engine->engines as $key => $val)
-			{
-				//echo  $useragent;
-				if (preg_match('|'.preg_quote($key).'|i', $useragent))
-				{
-					$engine->setEngine($val);
-					if (preg_match('|^'.$key.'.*?([A-Za-z0-9\.]+)|i', $useragent, $match))
-				{
-					
-					$value = isset($match[1]) ? $match[1] : '';
-					//echo $match . "<br />";
-					if(in_array($value, $engine->not_engine_versions)){
-					}
-					else {
-						$engine->setEngineVersion($value);
-					}
-				}
-				break;
-					//return true;
-				}
-			}
-			return $engine;
-		
-	}
 	
 		public  function detect_engine(){
 		$useragent = $this->useragent->getName();
@@ -124,6 +92,10 @@ else		{
 	public function setEngineVersion($name) {
 		$this->version = (string)$name;
 		  return $this;
+	}
+	
+	public function getUseragent(){
+		return $this->useragent->getName();
 	}
   
 }

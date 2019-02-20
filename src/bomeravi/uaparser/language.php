@@ -3,7 +3,7 @@ namespace Bomeravi\uaParser;
 use Bomeravi\uaParser\useragent;
 
 class language {
-	public $useragent;
+	private $useragent;
 	private $name;
 	private $accept_languages = array();
 	
@@ -204,14 +204,14 @@ private $not_languages = array(
 		elseif (NULL == $useragent) {
 			$this->useragent = new useragent($useragent);
 		}
-else		{
-			//echo "44";
-		//	var_dump($useragent);
-        //    throw new InvalidArgumentException($useragent . "is not working");
+		else{
+		
+            throw new InvalidArgumentException($useragent . "is not working");
         }
 		
 		$this->detect_language();
 		$this->check_languages();
+		//$this->detect_browser_language();
     }
   
   public function getName()
@@ -230,7 +230,7 @@ else		{
 		foreach ($this->languages as $key => $val)
 			{
 				//echo  $useragent;
-				if (preg_match('|'.$key.'|i', $useragent))
+				if (preg_match('|;'.$key.';|i', $useragent))
 				//if (preg_match('|'.preg_quote($key).'|i', $useragent))
 				{
 					
@@ -245,24 +245,6 @@ else		{
 		
 	}
 	
-	public static function detect($useragent=null){
-		$language = new language($useragent);
-		$useragent = $language->useragent->getName();
-		//echo $useragent;
-		foreach ($language->languages as $key => $val)
-			{
-				//echo  $useragent;
-				if (preg_match('|'.$key.'|i', $useragent))
-				//if (preg_match('|'.preg_quote($key).'|i', $useragent))
-				{
-					$language->setLanguage($val);
-				return $language;
-				}
-				
-				
-				}
-		return false;
-	}
 	public function check_languages(){
 		
 		$languages_header = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'en_US';
@@ -299,8 +281,7 @@ else		{
 	
 	public function getUseragent()
     {
-		//var_dump($this->useragent);
-        return $this->useragent;
+        return $this->useragent->getName();
     }
 	
 	public function getFullName($lang){

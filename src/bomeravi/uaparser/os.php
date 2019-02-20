@@ -130,22 +130,16 @@ private $os_bits = array(
 	
 	public function __construct($useragent = null)
     {
-			//var_dump($useragent);
-		//var_dump($useragent instanceof uaParser);
         if ($useragent instanceof useragent) {
-		//	echo "11111";
             $this->useragent = $useragent;
-			
         }
 		elseif ( is_string($useragent)) {
-   
 		    $this->useragent = new useragent($useragent);
 		} 
 		elseif (NULL == $useragent) {
 			$this->useragent = new useragent($useragent);
 		}
-else		{
-		//	var_dump($useragent);
+		else{
           throw new InvalidArgumentException($useragent . "is not working");
         }
 		$this->detect_os();
@@ -154,23 +148,18 @@ else		{
   
   public function getName()
     {
-        if (!isset($this->name)) {
-            os::detect($this,$this->getUseragent()->getName());
-        }
-
         return $this->name;
     }
 	
 	public function getVersion(){
-		 if (!isset($this->name)) {
-            os::detect($this, $this->getUseragent()->getName());
-        }
-
         return $this->version;
+	}
+	public function getBit(){
+		return $this->bit;
 	}
 	
 	public function detect_os_bit(){
-	$useragent = $this->useragent->getName();
+		$useragent = $this->useragent->getName();
 		if (is_array($this->os_bits) && count($this->os_bits) > 0)
 		{
 			foreach ($this->os_bits as $key => $val)
@@ -201,7 +190,7 @@ else		{
 		return FALSE;
 	}
 	
-	public static function detect(useragent $agent = null){
+/*	public static function detect(useragent $agent = null){
 	$os = new os($agent);
 		//$useragent = '';
 
@@ -233,7 +222,7 @@ else		{
 		//$os->setOs('Windows 10');
 		//$os->setOsVersion('Windows 10');
 		
-	}
+	}*/
 	
 	public function detect_os(){
 		$useragent = $this->useragent->getName();
@@ -248,26 +237,22 @@ else		{
 				{
 					
 					$value = isset($match[1]) ? $match[1] : '';
-					//echo $value . "<br />";
 					if(in_array($value, $this->not_os_versions)){
-						//$os->setOsVersion($value);
-					//$this->has_os_version = false;
+
 					}
 					else {
 						$this->setOsVersion($value);
-					//$this->set_os_version($value);
-					//$this->has_os_version = true;
-					//return TRUE;
+				
 					}
 				}
 				break;
-					//return true;
+			
 				}
 			}
-		//return false;
-		//$os->setOs('Windows 10');
-		//$os->setOsVersion('Windows 10');
-		
+	}
+
+	public function getUseragent(){
+		return $this->useragent->getName();
 	}
 	
 	public function setOs($name) {
@@ -285,6 +270,7 @@ else		{
 		$this->bit = $bit;
 		return $this;
 	}
+
 	public function getOsBit(){
 		if(isset($this->bit))
 		return $this->bit ; //. " bits";
@@ -293,7 +279,17 @@ else		{
 			return $this->bit ;
 		}
 	}
+
+	public function check_os($name){
+		if($this->name == $name)
+			return true;
+		return false;
+	}
 	
-  
-  
+	public function check_version($name){
+		if($this->version == $name)
+			return true;
+		return false;
+	}
+	
 }
